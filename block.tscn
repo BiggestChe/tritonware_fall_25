@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://dnjog1yshpixw"]
+
+[sub_resource type="Gradient" id="Gradient_4cwk6"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_sijtq"]
+gradient = SubResource("Gradient_4cwk6")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_73ikp"]
+size = Vector2(72.621124, 58.311653)
+
+[node name="Block" type="RigidBody2D" groups=["Rigidbody"]]
+collision_layer = 2
+collision_mask = 3
+can_sleep = false
+lock_rotation = true
+linear_damp = 3.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(51, 0)
+scale = Vector2(0.96943116, 0.97223544)
+texture = SubResource("GradientTexture2D_sijtq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(50, 0)
+scale = Vector2(0.90725195, 1.2173858)
+shape = SubResource("RectangleShape2D_73ikp")

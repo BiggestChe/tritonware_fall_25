@@ -99,20 +99,6 @@ func state_look_up(delta):
 		change_state(State.JUMPING) # Trigger jump on double press
 	elif not Input.is_action_pressed("look_up2"):
 		change_state(State.IDLE)
-		
-#handles looking up using a window after 
-#func handle_look_up():
-	#print("looking up")
-	#
-	#
-	#if look_up_pressed_time > 0:
-		## Second press within window
-		#look_up_press_count += 1
-	#else:
-		#look_up_press_count = 1
-	#look_up_pressed_time = double_press_window
-	#change_state(State.LOOK_UP)
-	
 	
 func state_jumping(delta):
 	# Apply jump velocity only when entering this state
@@ -139,17 +125,3 @@ func state_falling(delta):
 # --- Helper function ---
 func change_state(new_state: State):
 	current_state = new_state
-
-func _on_area_2d_area_entered(body) -> void:
-	print(body)
-	if body.is_in_group("Rigidbody")	:
-		print("i got touched")
-		body.collision_layer = 1
-		body.collision_mask = 1
-
-
-
-func _on_area_2d_area_exited(body) -> void:
-	if body.is_in_group("Rigidbody")	:
-		body.collision_layer = 2
-		body.collision_mask = 2

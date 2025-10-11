@@ -34,8 +34,10 @@ position = Vector2(708, -39)
 [node name="RigidBody2D" type="RigidBody2D" parent="." groups=["Rigidbody"]]
 position = Vector2(465, 166)
 collision_layer = 2
-collision_mask = 2
-mass = 0.7
+collision_mask = 3
+can_sleep = false
+lock_rotation = true
+linear_damp = 3.0
 
 [node name="Sprite2D" type="Sprite2D" parent="RigidBody2D"]
 position = Vector2(51, 0)
@@ -43,6 +45,24 @@ scale = Vector2(0.96943116, 0.97223544)
 texture = SubResource("GradientTexture2D_sijtq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
-position = Vector2(60.463074, 2.1063995)
+position = Vector2(50, 0)
+scale = Vector2(0.90725195, 1.2173858)
+shape = SubResource("RectangleShape2D_73ikp")
+
+[node name="RigidBody2D2" type="RigidBody2D" parent="." groups=["Rigidbody"]]
+position = Vector2(643, 102)
+collision_layer = 2
+collision_mask = 3
+can_sleep = false
+lock_rotation = true
+linear_damp = 3.0
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D2"]
+position = Vector2(51, 0)
+scale = Vector2(0.96943116, 0.97223544)
+texture = SubResource("GradientTexture2D_sijtq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D2"]
+position = Vector2(50, 0)
 scale = Vector2(0.90725195, 1.2173858)
 shape = SubResource("RectangleShape2D_73ikp")

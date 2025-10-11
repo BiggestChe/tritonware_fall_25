@@ -7,6 +7,10 @@ extends CharacterBody2D
 @export var jump_velocity := -500
 @export var gravity := 900
 
+#--Physics Variables
+@export var push_force = Vector2(100,0)
+const MAX_VELOCITY := 100
+
 # --- Look Up double press ---
 var look_up_pressed_time := 0.0
 @export var double_press_window := 1.0 # seconds
@@ -37,6 +41,7 @@ func _physics_process(delta):
 		print("Double press detected! Jump!")
 		change_state(State.JUMPING)
 		look_up_press_count = 0  # reset after jump
+		
 	
 	match current_state:
 		State.IDLE:
@@ -133,21 +138,6 @@ func state_falling(delta):
 	if is_on_floor():
 		change_state(State.IDLE)
 
-# --- Helper function ---
+#  Helper function for changing state
 func change_state(new_state: State):
 	current_state = new_state
-
-
-func _on_area_2d_area_entered(body) -> void:
-	print(body)
-	if body.is_in_group("Rigidbody")	:
-		print("i got touched")
-		body.collision_layer = 1
-		body.collision_mask = 1
-
-
-
-func _on_area_2d_area_exited(body) -> void:
-	if body.is_in_group("Rigidbody")	:
-		body.collision_layer = 2
-		body.collision_mask = 2
