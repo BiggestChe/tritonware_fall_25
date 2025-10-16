@@ -13,6 +13,12 @@ var look_up_pressed_time := 0.0
 var look_up_press_count := 0
 var look_up_timer = 0.0
 
+@onready var sprite = $Sprite2D
+#
+##light cone
+#@onready var light_cone = $Sprite2D/PointLight2D
+#var is_looking_up := false
+
 # --- State machine ---
 enum State { IDLE, WALKING, JUMPING, FALLING, LOOK_UP }
 var current_state : State = State.IDLE
@@ -26,10 +32,7 @@ func _physics_process(delta):
 	
 	if look_up_pressed_time > 0:
 		look_up_pressed_time -= delta
-	#else:
-		#look_up_press_count = 0
-	
-	# Detect look up press
+
 	if Input.is_action_just_pressed("look_up2"):
 		look_up_press_count += 1
 		look_up_timer = double_press_window
@@ -52,6 +55,11 @@ func _physics_process(delta):
 			state_falling(delta)
 		State.LOOK_UP:
 			state_look_up(delta)
+		
+	#if is_looking_up:
+		#light_cone.rotation_degrees = -90
+	#else:
+		#light_cone.rotation_degrees = 90
 
 # --- State functions ---
 func state_idle(delta):
@@ -73,6 +81,10 @@ func state_walking(delta):
 	if direction == 0:
 		change_state(State.IDLE)
 		return
+	if(direction > 0 ):
+		sprite.flip_h = false
+	else:
+		sprite.flip_h = true	
 
 	velocity.x = direction * speed
 	velocity.y += gravity * delta
@@ -93,7 +105,7 @@ func state_look_up(delta):
 	velocity.x = direction * speed
 	velocity.y += gravity * delta
 	move_and_slide()
-
+	
 	# Trigger jump on double press
 	if look_up_press_count >= 2:
 		change_state(State.JUMPING) # Trigger jump on double press

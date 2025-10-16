@@ -1,8 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://bpa1kynvv2hn0"]
+[gd_scene load_steps=6 format=3 uid="uid://78w8gh0yb544"]
 
 [ext_resource type="Script" uid="uid://dn223q7lutoww" path="res://Player/state_machine2.gd" id="1_apv7x"]
 [ext_resource type="Texture2D" uid="uid://g0x523idho5e" path="res://Sprites/icon.svg" id="2_apv7x"]
-[ext_resource type="Script" uid="uid://uvdtwe076q3r" path="res://Player/area_2d.gd" id="3_apv7x"]
+[ext_resource type="Script" path="res://Player/area_2d.gd" id="3_apv7x"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hqtel"]
 size = Vector2(129, 118)

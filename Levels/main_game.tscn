@@ -1,18 +1,18 @@
 [gd_scene load_steps=7 format=3 uid="uid://bnvft2ufu4lp2"]
 
-[ext_resource type="PackedScene" uid="uid://3yv18ax1syhs" path="res://Player/eye_1.tscn" id="1_73ikp"]
-[ext_resource type="PackedScene" uid="uid://bpa1kynvv2hn0" path="res://Player/eye_2.tscn" id="2_4cwk6"]
+[ext_resource type="PackedScene" uid="uid://bq6rt5tmj825x" path="res://Player/eye_1.tscn" id="1_73ikp"]
+[ext_resource type="PackedScene" uid="uid://78w8gh0yb544" path="res://Player/eye_2.tscn" id="2_4cwk6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sijtq"]
 size = Vector2(9.977273, 65)
 
-[sub_resource type="Gradient" id="Gradient_4cwk6"]
+[sub_resource type="Gradient" id="Gradient_73ikp"]
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_sijtq"]
-gradient = SubResource("Gradient_4cwk6")
+gradient = SubResource("Gradient_73ikp")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_73ikp"]
-size = Vector2(72.621124, 58.311653)
+size = Vector2(62.94118, 48.487804)
 
 [node name="Node2D" type="Node2D"]
 
@@ -27,12 +27,13 @@ scale = Vector2(88.98008, 2.5924056)
 shape = SubResource("RectangleShape2D_sijtq")
 
 [node name="Eye1" parent="." instance=ExtResource("1_73ikp")]
+position = Vector2(171, 263)
 
 [node name="Eye2" parent="." instance=ExtResource("2_4cwk6")]
 position = Vector2(708, -39)
 
-[node name="RigidBody2D" type="RigidBody2D" parent="." groups=["Rigidbody"]]
-position = Vector2(465, 166)
+[node name="RigidBody2D" type="RigidBody2D" parent="." groups=["Rigidbody", "mirror"]]
+position = Vector2(497, 361)
 collision_layer = 2
 collision_mask = 3
 can_sleep = false
@@ -40,29 +41,38 @@ lock_rotation = true
 linear_damp = 3.0
 
 [node name="Sprite2D" type="Sprite2D" parent="RigidBody2D"]
-position = Vector2(51, 0)
-scale = Vector2(0.96943116, 0.97223544)
+position = Vector2(0.00012207031, 0)
+scale = Vector2(1.5109297, 1.5153004)
 texture = SubResource("GradientTexture2D_sijtq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
-position = Vector2(50, 0)
-scale = Vector2(0.90725195, 1.2173858)
+position = Vector2(4.5, 1)
+rotation = 0.7696902
+scale = Vector2(1.4140188, 1.8973851)
 shape = SubResource("RectangleShape2D_73ikp")
 
-[node name="RigidBody2D2" type="RigidBody2D" parent="." groups=["Rigidbody"]]
-position = Vector2(643, 102)
-collision_layer = 2
-collision_mask = 3
-can_sleep = false
-lock_rotation = true
-linear_damp = 3.0
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+scale = Vector2(38.924778, 2.727706)
 
-[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D2"]
-position = Vector2(51, 0)
+[node name="CanvasLayer" type="CanvasLayer" parent="CanvasModulate"]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasModulate"]
+z_index = -1
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.7341328, 7.526201)
+color = Color(0.072842635, 0.072842635, 0.072842635, 1)
+
+[node name="FloatingMirror" type="StaticBody2D" parent="." groups=["mirror"]]
+position = Vector2(497, 210)
+collision_layer = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="FloatingMirror" groups=["mirror"]]
+position = Vector2(1, -80)
 scale = Vector2(0.96943116, 0.97223544)
 texture = SubResource("GradientTexture2D_sijtq")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D2"]
-position = Vector2(50, 0)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FloatingMirror" groups=["mirror"]]
+position = Vector2(0, -80)
 scale = Vector2(0.90725195, 1.2173858)
 shape = SubResource("RectangleShape2D_73ikp")

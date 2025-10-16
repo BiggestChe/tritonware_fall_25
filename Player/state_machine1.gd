@@ -12,10 +12,20 @@ extends CharacterBody2D
 const MAX_VELOCITY := 100
 
 # --- Look Up double press ---
-var look_up_pressed_time := 0.0
-@export var double_press_window := 1.0 # seconds
+@export var double_press_window := 0.5 # seconds
 var look_up_press_count := 0
 var look_up_timer = 0.0
+
+#Animation Variables
+@onready var sprite = $Sprite2D
+
+#Light Cone
+@onready var light_cone = $Sprite2D/PointLight2D
+var is_looking_up := false
+
+#laser
+@onready var laser_beam = $Laser
+@export var rotation_speed := 3.0
 
 # --- State machine ---
 enum State { IDLE, WALKING, JUMPING, FALLING, LOOK_UP }
@@ -25,10 +35,14 @@ var current_state : State = State.IDLE
 func _physics_process(delta):
 	
 	#print("Current state: ", current_state)
-	if look_up_pressed_time > 0:
-		look_up_pressed_time -= delta
-	#else:
-		#look_up_press_count = 0
+	
+	#after jumping, create time window to create double press
+	if look_up_timer > 0:
+		look_up_timer -= delta
+		if look_up_timer <= 0:
+			look_up_press_count = 0
+			look_up_timer = 0
+		
 	
 	# Detect look up press
 	if Input.is_action_just_pressed("look_up1"):
@@ -41,7 +55,18 @@ func _physics_process(delta):
 		print("Double press detected! Jump!")
 		change_state(State.JUMPING)
 		look_up_press_count = 0  # reset after jump
-		
+		look_up_timer = 0
+	
+	#if Input.is_action_pressed("left_1"):
+		#rotation -= rotation_speed * delta
+	#elif Input.is_action_pressed("right_1"):
+		#rotation += rotation_speed * delta
+
+	# Fire when pressing "shoot"
+	if Input.is_action_pressed("fire_laser"):
+		laser_beam.active = true
+	else:
+		laser_beam.active = false	
 	
 	match current_state:
 		State.IDLE:
@@ -54,9 +79,13 @@ func _physics_process(delta):
 			state_falling(delta)
 		State.LOOK_UP:
 			state_look_up(delta)
+			if is_looking_up:
+				light_cone.rotation_degrees = 0
+			else:
+				light_cone.rotation_degrees = 90
 
 # --- State functions ---
-func state_idle(delta):
+func state_idle(_delta):
 	if not is_on_floor():
 		change_state(State.FALLING)
 		return
@@ -71,11 +100,19 @@ func state_idle(delta):
 
 func state_walking(delta):
 	var direction = Input.get_axis("left_1", "right_1")
+	print(direction)
+
 
 	if direction == 0:
 		change_state(State.IDLE)
 		return
-
+	if direction > 0 :
+		sprite.flip_h = false
+		light_cone.rotation_degrees = 90
+	else:
+		sprite.flip_h = true	
+		light_cone.rotation_degrees = -90
+		
 	velocity.x = direction * speed
 	velocity.y += gravity * delta
 	move_and_slide()
@@ -91,30 +128,19 @@ func state_look_up(delta):
 	# Stay in look up until player releases input or triggers jump
 	#handle_look_up()
 	
+	is_looking_up = true
+
 	var direction = Input.get_axis("left_1", "right_1")
 	velocity.x = direction * speed
 	velocity.y += gravity * delta
 	move_and_slide()
-
+	
 	# Trigger jump on double press
 	if look_up_press_count >= 2:
 		change_state(State.JUMPING) # Trigger jump on double press
 	elif not Input.is_action_pressed("look_up1"):
+		is_looking_up = false
 		change_state(State.IDLE)
-		
-#handles looking up using a window after 
-#func handle_look_up():
-	#print("looking up")
-	#
-	#
-	#if look_up_pressed_time > 0:
-		## Second press within window
-		#look_up_press_count += 1
-	#else:
-		#look_up_press_count = 1
-	#look_up_pressed_time = double_press_window
-	#change_state(State.LOOK_UP)
-	
 	
 func state_jumping(delta):
 	# Apply jump velocity only when entering this state

@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://3yv18ax1syhs"]
+[gd_scene load_steps=8 format=3 uid="uid://bq6rt5tmj825x"]
 
 [ext_resource type="Script" uid="uid://40eosq0j1p1s" path="res://Player/state_machine1.gd" id="1_dke3q"]
 [ext_resource type="Texture2D" uid="uid://g0x523idho5e" path="res://Sprites/icon.svg" id="2_vbaq2"]
 [ext_resource type="Script" uid="uid://uvdtwe076q3r" path="res://Player/area_2d.gd" id="3_vbaq2"]
+[ext_resource type="Texture2D" uid="uid://cvjk66adn1j8t" path="res://Sprites/488d6042bbb48b409ea7d633200c7a880ace1b9c(2).png" id="4_oqvjh"]
+[ext_resource type="PackedScene" uid="uid://dya2m51sgdi8r" path="res://Player/laser_beam.tscn" id="5_tc5ac"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hqtel"]
 size = Vector2(129, 118)
@@ -23,6 +25,21 @@ shape = SubResource("RectangleShape2D_hqtel")
 
 [node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D"]
 texture = ExtResource("2_vbaq2")
+flip_h = true
+
+[node name="PointLight2D" type="PointLight2D" parent="CharacterBody2D/Sprite2D"]
+position = Vector2(0.7000084, -0.45001218)
+rotation = 1.5707964
+scale = Vector2(6.684411, 3.6309025)
+color = Color(1.0184411, 1.0184411, 1.0184411, 1)
+energy = 7.03
+range_z_max = 2000
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 20.0
+texture = ExtResource("4_oqvjh")
+offset = Vector2(-0.8302876, -68.10979)
+texture_scale = 0.1
 
 [node name="Area2D" type="Area2D" parent="CharacterBody2D" groups=["Rigidbody"]]
 scale = Vector2(0.8533932, 1.3754668)
@@ -35,6 +52,10 @@ position = Vector2(0, -0.76025856)
 rotation = 3.1415925
 scale = Vector2(6.4528995, -8.90643)
 shape = SubResource("RectangleShape2D_dke3q")
+
+[node name="Laser" parent="CharacterBody2D" node_paths=PackedStringArray("player") instance=ExtResource("5_tc5ac")]
+rotation = 0.0
+player = NodePath("..")
 
 [connection signal="body_entered" from="CharacterBody2D/Area2D" to="CharacterBody2D/Area2D" method="_on_body_entered"]
 [connection signal="body_exited" from="CharacterBody2D/Area2D" to="CharacterBody2D" method="_on_area_2d_body_exited"]

@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://br6c3stw3inyf"]
+
+[ext_resource type="Texture2D" uid="uid://cvjk66adn1j8t" path="res://Sprites/488d6042bbb48b409ea7d633200c7a880ace1b9c(2).png" id="1_tm7ok"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(269, 189)
+rotation = 1.5707964
+scale = Vector2(6.684411, 3.6309025)
+color = Color(1.0184411, 1.0184411, 1.0184411, 1)
+energy = 7.03
+range_z_max = 2000
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 20.0
+texture = ExtResource("1_tm7ok")
+texture_scale = 0.1

@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://dya2m51sgdi8r"]
+
+[ext_resource type="Script" uid="uid://8tnj1whb2hbt" path="res://Player/laser_beam.gd" id="1_utrga"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_utrga"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 1.0
+gravity = Vector3(0, 98, 0)
+
+[node name="Laser" type="Node2D"]
+rotation = 1.5707964
+script = ExtResource("1_utrga")
+
+[node name="Laser" type="RayCast2D" parent="."]
+rotation = -1.5707964
+scale = Vector2(-9.660564, 7.874483)
+collision_mask = 6
+hit_from_inside = true
+
+[node name="Line2D" type="Line2D" parent="."]
+default_color = Color(1, 0.91330606, 1, 1)
+
+[node name="End" type="GPUParticles2D" parent="."]
+position = Vector2(370, 0)
+scale = Vector2(0.56617314, 0.48982388)
+process_material = SubResource("ParticleProcessMaterial_utrga")
