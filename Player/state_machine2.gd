@@ -19,6 +19,8 @@ var look_up_timer = 0.0
 #@onready var light_cone = $Sprite2D/PointLight2D
 #var is_looking_up := false
 
+signal died
+
 # --- State machine ---
 enum State { IDLE, WALKING, JUMPING, FALLING, LOOK_UP }
 var current_state : State = State.IDLE

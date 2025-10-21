@@ -1,7 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://bnvft2ufu4lp2"]
+[gd_scene load_steps=10 format=3 uid="uid://bnvft2ufu4lp2"]
 
-[ext_resource type="PackedScene" uid="uid://bq6rt5tmj825x" path="res://Player/eye_1.tscn" id="1_73ikp"]
-[ext_resource type="PackedScene" uid="uid://78w8gh0yb544" path="res://Player/eye_2.tscn" id="2_4cwk6"]
+[ext_resource type="PackedScene" uid="uid://3yv18ax1syhs" path="res://Player/eye_1.tscn" id="1_73ikp"]
+[ext_resource type="PackedScene" uid="uid://bpa1kynvv2hn0" path="res://Player/eye_2.tscn" id="2_4cwk6"]
+[ext_resource type="Script" uid="uid://cip6jc4rvrde1" path="res://game_manager.gd" id="3_4cwk6"]
+[ext_resource type="PackedScene" uid="uid://su5336uvq8vq" path="res://Objects/door.tscn" id="4_7v86k"]
+[ext_resource type="PackedScene" uid="uid://cha7qx8mvelqf" path="res://Objects/pressure_plate.tscn" id="5_cigus"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sijtq"]
 size = Vector2(9.977273, 65)
@@ -14,7 +17,7 @@ gradient = SubResource("Gradient_73ikp")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_73ikp"]
 size = Vector2(62.94118, 48.487804)
 
-[node name="Node2D" type="Node2D"]
+[node name="Main" type="Node2D"]
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 scale = Vector2(1.6399988, 1)
@@ -76,3 +79,20 @@ texture = SubResource("GradientTexture2D_sijtq")
 position = Vector2(0, -80)
 scale = Vector2(0.90725195, 1.2173858)
 shape = SubResource("RectangleShape2D_73ikp")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+
+[node name="GameManager" type="Node2D" parent="." groups=["GameManager"]]
+script = ExtResource("3_4cwk6")
+
+[node name="Door" parent="." groups=["door"] instance=ExtResource("4_7v86k")]
+position = Vector2(857, 390)
+
+[node name="PressurePlate" parent="." instance=ExtResource("5_cigus")]
+position = Vector2(735.00006, 57)
+collision_layer = 3
+collision_mask = 3
+
+[connection signal="pressed" from="PressurePlate" to="Door" method="open"]
+[connection signal="released" from="PressurePlate" to="Door" method="_on_pressure_plate_released"]
+[connection signal="released" from="PressurePlate" to="Door" method="close"]

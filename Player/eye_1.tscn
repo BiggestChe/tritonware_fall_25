@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://bq6rt5tmj825x"]
+[gd_scene load_steps=9 format=3 uid="uid://3yv18ax1syhs"]
 
 [ext_resource type="Script" uid="uid://40eosq0j1p1s" path="res://Player/state_machine1.gd" id="1_dke3q"]
 [ext_resource type="Texture2D" uid="uid://g0x523idho5e" path="res://Sprites/icon.svg" id="2_vbaq2"]
-[ext_resource type="Script" uid="uid://uvdtwe076q3r" path="res://Player/area_2d.gd" id="3_vbaq2"]
+[ext_resource type="Script" uid="uid://cverdi7kq6f12" path="res://Player/player_hitbox.gd" id="4_54h66"]
 [ext_resource type="Texture2D" uid="uid://cvjk66adn1j8t" path="res://Sprites/488d6042bbb48b409ea7d633200c7a880ace1b9c(2).png" id="4_oqvjh"]
+[ext_resource type="Script" path="res://Player/blocks.gd" id="5_3h72v"]
 [ext_resource type="PackedScene" uid="uid://dya2m51sgdi8r" path="res://Player/laser_beam.tscn" id="5_tc5ac"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hqtel"]
@@ -12,28 +13,27 @@ size = Vector2(129, 118)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dke3q"]
 size = Vector2(17.334038, 15.502109)
 
-[node name="Eye1" type="Node2D"]
-
-[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
-collision_layer = 3
+[node name="Eye1" type="CharacterBody2D" groups=["Players"]]
 script = ExtResource("1_dke3q")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(2, 1)
 scale = Vector2(1.1263511, 1.1249617)
 shape = SubResource("RectangleShape2D_hqtel")
 
-[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D"]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_vbaq2")
 flip_h = true
 
-[node name="PointLight2D" type="PointLight2D" parent="CharacterBody2D/Sprite2D"]
+[node name="PointLight2D" type="PointLight2D" parent="Sprite2D"]
+z_index = 1
 position = Vector2(0.7000084, -0.45001218)
 rotation = 1.5707964
-scale = Vector2(6.684411, 3.6309025)
-color = Color(1.0184411, 1.0184411, 1.0184411, 1)
-energy = 7.03
-range_z_max = 2000
+scale = Vector2(6.6571374, 3.6309025)
+color = Color(1.018, 1.018, 1.018, 1)
+energy = 8.17
+range_z_max = 4000
+range_item_cull_mask = 3
 shadow_enabled = true
 shadow_filter = 1
 shadow_filter_smooth = 20.0
@@ -41,22 +41,36 @@ texture = ExtResource("4_oqvjh")
 offset = Vector2(-0.8302876, -68.10979)
 texture_scale = 0.1
 
-[node name="Area2D" type="Area2D" parent="CharacterBody2D" groups=["Rigidbody"]]
-scale = Vector2(0.8533932, 1.3754668)
+[node name="Area2D2" type="Area2D" parent="." groups=["Rigidbody"]]
+scale = Vector2(1.4430572, 1.2171482)
 collision_layer = 3
 collision_mask = 3
-script = ExtResource("3_vbaq2")
+script = ExtResource("4_54h66")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
 position = Vector2(0, -0.76025856)
 rotation = 3.1415925
 scale = Vector2(6.4528995, -8.90643)
 shape = SubResource("RectangleShape2D_dke3q")
 
-[node name="Laser" parent="CharacterBody2D" node_paths=PackedStringArray("player") instance=ExtResource("5_tc5ac")]
+[node name="Area2D" type="Area2D" parent="." groups=["Rigidbody"]]
+scale = Vector2(0.8533932, 1.3754668)
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("5_3h72v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -0.76025856)
+rotation = 3.1415925
+scale = Vector2(6.4528995, -8.90643)
+shape = SubResource("RectangleShape2D_dke3q")
+
+[node name="Laser" parent="." node_paths=PackedStringArray("player") instance=ExtResource("5_tc5ac")]
 rotation = 0.0
 player = NodePath("..")
 
-[connection signal="body_entered" from="CharacterBody2D/Area2D" to="CharacterBody2D/Area2D" method="_on_body_entered"]
-[connection signal="body_exited" from="CharacterBody2D/Area2D" to="CharacterBody2D" method="_on_area_2d_body_exited"]
-[connection signal="body_exited" from="CharacterBody2D/Area2D" to="CharacterBody2D/Area2D" method="_on_body_exited"]
+[connection signal="body_entered" from="Area2D2" to="Area2D2" method="_on_body_entered"]
+[connection signal="body_exited" from="Area2D2" to="Area2D2" method="_on_body_exited"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]
+[connection signal="body_exited" from="Area2D" to="Area2D" method="_on_body_exited"]

@@ -9,6 +9,8 @@ extends Node2D
 
 var active := false
 
+signal door_open
+
 func _ready():
 	# The Line2D will now draw relative to this Node2D's position.
 	line.visible = false
@@ -31,13 +33,12 @@ func fire_laser():
 	# 1. Align this node (the laser's origin) with the player
 	# This sets up the local coordinate system for the Line2D.
 	global_position = player.global_position
-	global_rotation = player.global_rotation
+	var current_direction = player.aim_direction
 	
 	var remaining_length = max_length
 	# The first point of the laser starts at this node's local origin (0,0)
 	var current_origin = global_position
 	# The direction is based on this node's new rotation
-	var current_direction = Vector2.RIGHT.rotated(global_rotation)
 
 	line.clear_points()
 	# The first point in the Line2D is its own local origin.
@@ -60,6 +61,7 @@ func fire_laser():
 			# 2. Convert the GLOBAL hit_point to this node's LOCAL space
 			line.add_point(to_local(hit_point))
 
+			#if hits mirror
 			if is_instance_valid(collider) and collider.is_in_group("mirror"):
 				remaining_length -= current_origin.distance_to(hit_point)
 				current_origin = hit_point
@@ -72,6 +74,21 @@ func fire_laser():
 				
 				# Move origin slightly to avoid self-collision on next raycast
 				current_origin += current_direction * 0.1
+			
+			#handles door
+			elif is_instance_valid(collider) and collider.is_in_group("door"):
+				if collider.has_method("open"):
+					collider.open()
+				print("piercing and opening door")
+				return
+				
+			 #handles lamp
+			elif is_instance_valid(collider) and collider.is_in_group("lamps"):
+				if collider.has_method("light_up"):
+					collider.light_up()
+					
+				return
+			
 				
 			else: # Hit a non-mirror object
 				end_marker.global_position = hit_point

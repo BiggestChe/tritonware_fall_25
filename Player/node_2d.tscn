@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://cb3gyhc3h56j3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gtgmb"]
+
+[node name="Door" type="StaticBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(-2.0021567, 6.646087)
+shape = SubResource("RectangleShape2D_gtgmb")

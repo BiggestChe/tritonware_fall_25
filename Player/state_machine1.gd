@@ -27,6 +27,8 @@ var is_looking_up := false
 @onready var laser_beam = $Laser
 @export var rotation_speed := 3.0
 
+@onready var aim_direction = Vector2.RIGHT
+
 # --- State machine ---
 enum State { IDLE, WALKING, JUMPING, FALLING, LOOK_UP }
 var current_state : State = State.IDLE
@@ -48,7 +50,7 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("look_up1"):
 		look_up_press_count += 1
 		look_up_timer = double_press_window
-		print("Look up pressed, count:", look_up_press_count)
+		#print("Look up pressed, count:", look_up_press_count)
 		
 		# Trigger jump if double press detected 
 	if look_up_press_count >= 2:
@@ -81,6 +83,7 @@ func _physics_process(delta):
 			state_look_up(delta)
 			if is_looking_up:
 				light_cone.rotation_degrees = 0
+				aim_direction 
 			else:
 				light_cone.rotation_degrees = 90
 
@@ -100,7 +103,7 @@ func state_idle(_delta):
 
 func state_walking(delta):
 	var direction = Input.get_axis("left_1", "right_1")
-	print(direction)
+	#print(direction)
 
 
 	if direction == 0:
@@ -109,9 +112,11 @@ func state_walking(delta):
 	if direction > 0 :
 		sprite.flip_h = false
 		light_cone.rotation_degrees = 90
+		aim_direction = Vector2.RIGHT
 	else:
 		sprite.flip_h = true	
 		light_cone.rotation_degrees = -90
+		aim_direction = Vector2.LEFT
 		
 	velocity.x = direction * speed
 	velocity.y += gravity * delta
@@ -129,6 +134,7 @@ func state_look_up(delta):
 	#handle_look_up()
 	
 	is_looking_up = true
+	aim_direction = Vector2.UP
 
 	var direction = Input.get_axis("left_1", "right_1")
 	velocity.x = direction * speed

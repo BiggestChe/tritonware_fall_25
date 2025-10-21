@@ -15,6 +15,20 @@ run/main_scene="uid://bnvft2ufu4lp2"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://Sprites/icon.svg"
 
+[autoload]
+
+GameManager="*res://game_manager.gd"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+
+[global_group]
+
+Players=""
+GameManager=""
+
 [input]
 
 left_1={
